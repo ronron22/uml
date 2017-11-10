@@ -1,0 +1,34 @@
+@startuml
+
+title Howto changing varnish configuration (activity)
+
+start
+repeat
+ : pull files from Gitlab;
+note right: localy
+ : define new ansible variables; 
+ : push files on Gitlab;
+note left: git add, commit and push
+ : pull files from Gitlab;
+note: on svcdus1
+ : ansible-playbook execution;
+note right: ansible-playbook playbooks/prdweb.yml -t varnish,varnishcfg
+repeat while (testing)
+if (production environment?) then (no)
+      stop
+else (yes)
+ : push configuration on Gitlab;
+note right: git add, commit and push
+endif
+ : on svcdus1;
+note left: go to /home/ansible/workspace/system_configuration
+ : fetching prod configuration;
+note right: scp -r prdweb:/etc/varnish/* .
+ : push modifications;
+note left: git add, commit and push
+ : verify ;
+note right: http://1.0.12.204/host/system_configuration
+
+stop
+
+@enduml

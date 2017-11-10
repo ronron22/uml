@@ -1,0 +1,16 @@
+@startuml
+
+Title Séquence de git entre le poste, le dépôt et le serveur
+
+== Clone initial==
+Laptop <- git.host.fr : git clone git@git.host.fr:clients...
+== Création d'une nouvelle branche ==
+hnote over Laptop : git branch "my branch"
+hnote over Laptop : git checkout "my branch"
+== Push de la branche ==
+Laptop -> git.host.fr : git push origin "my branch"
+== Merge de la branche == 
+hnote over git.host.fr : Dans l'interface de git.host.fr
+== Pull de la branche master "H&C"==
+git.host.fr -> "H&C" : git pull git@git.host.fr:clients...
+@enduml

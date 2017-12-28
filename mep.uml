@@ -1,0 +1,36 @@
+
+@startuml
+
+title Processus de MEP 
+
+start
+ : choisir le type de déploiement : \n standard, bootstrap, solr, etc.;
+partition "Intégration acteur 1" {
+repeat
+ : MEP Ansistrano sur Intégration;
+ : Validation 1; 
+ note right: url de test \nhttps://int.1.fr/
+repeat while (rollback si erreur)
+}
+partition "Préproduction - acteur 2" {
+ : merge de la branche int vers ppd;
+repeat
+ : MEP Ansistrano sur Pré-production;
+ : Validation 1; 
+ note left: url de test\nhttps://ppd.1.fr/
+repeat while (rollback si erreur)
+}
+partition "Production - acteur 2" {
+ : merge de la branche ppd vers Master (prd);
+ : désactivation des probes http sur la vip;
+repeat
+ : MEP Ansistrano sur Production;
+ : Validation client; 
+  note right: url de test\nhttps://www.1.fr/  
+ : réactivation des probes http sur la vip;
+repeat while (rollback si erreur)
+}
+
+stop
+
+@enduml

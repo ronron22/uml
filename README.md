@@ -1,6 +1,11 @@
 # Using plantuml for drawing beautiful uml schema
 
-Some examples of uml schema activity and sequence 
+### installing plantumlme.sh
+
+```bash
+cd cmdline && sudo make install
+```
+## Some examples of uml schema activity and sequence 
 
 ### using plantuml
 
